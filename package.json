@@ -1,7 +1,7 @@
 {
   "name": "fnce",
   "version": "0.0.1",
-  "description": "Personal Finance",
+  "description": "Personal Finance Tools",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
