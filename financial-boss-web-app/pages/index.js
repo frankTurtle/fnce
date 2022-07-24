@@ -1,8 +1,35 @@
 import Head from "next/head";
 import Image from "next/image";
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+import { useRouter } from "next/router";
+import Link from "next/link";
+
+import { auth } from "../firebase/config";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const router = useRouter();
+
+  function handleLogin(e) {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("logged In");
+        router.push("/dashboard");
+      })
+      .catch((error) => {
+        console.log(error);
+        setError("email or password not correct");
+        // ..
+      });
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -37,7 +64,12 @@ export default function Home() {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
               <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                <form className="space-y-6" action="#" method="POST">
+                <form className="space-y-6" onSubmit={handleLogin}>
+                  {error && (
+                    <p className="text-center text-xs mt-3 text-red-400">
+                      {error}
+                    </p>
+                  )}
                   <div>
                     <label
                       htmlFor="email"
@@ -49,6 +81,8 @@ export default function Home() {
                       <input
                         id="email"
                         name="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
                         type="email"
                         autoComplete="email"
                         required
@@ -68,6 +102,8 @@ export default function Home() {
                       <input
                         id="password"
                         name="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
                         type="password"
                         autoComplete="current-password"
                         required
@@ -110,6 +146,13 @@ export default function Home() {
                       Sign in
                     </button>
                   </div>
+
+                  <p className="text-center text-xs mt-4">
+                    Don't have an account{" "}
+                    <Link href="/signup">
+                      <a className="text-blue-700">sign Up</a>
+                    </Link>
+                  </p>
                 </form>
 
                 {/* <div className="mt-6">
