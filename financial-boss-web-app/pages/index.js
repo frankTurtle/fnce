@@ -16,15 +16,15 @@ export default function Home() {
         <>
           <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-              <img
+              {/* <img
                 className="mx-auto h-12 w-auto"
                 src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
                 alt="Workflow"
-              />
+              /> */}
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                 Sign in to your account
               </h2>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              {/* <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
                 <a
                   href="#"
@@ -32,7 +32,7 @@ export default function Home() {
                 >
                   start your 14-day free trial
                 </a>
-              </p>
+              </p> */}
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -76,7 +76,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  {/* <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <input
                         id="remember-me"
@@ -100,7 +100,7 @@ export default function Home() {
                         Forgot your password?
                       </a>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div>
                     <button
@@ -112,7 +112,7 @@ export default function Home() {
                   </div>
                 </form>
 
-                <div className="mt-6">
+                {/* <div className="mt-6">
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gray-300" />
@@ -184,7 +184,7 @@ export default function Home() {
                       </a>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
