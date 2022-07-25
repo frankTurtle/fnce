@@ -105,7 +105,7 @@ export default function Home() {
                   </div>
 
                   <p className="text-center text-xs mt-4">
-                    Don't have an account{" "}
+                    {"Don't have an account "}
                     <Link href="/signup">
                       <a className="text-blue-700">sign Up</a>
                     </Link>
