@@ -1,13 +1,10 @@
-import React from "react";
-import { Fragment } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-
-import { auth } from "../firebase/config";
-import { signOut } from "firebase/auth";
-import { useRouter } from "next/router";
 import Image from "next/image";
 
+import { useAuth } from "../components/context/AuthUserContext";
 import styles from "../styles/Home.module.css";
 
 const user = {
@@ -34,19 +31,13 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
+  const { authUser, loading, signOut } = useAuth();
   const router = useRouter();
 
-  function handleLogOut(e) {
-    e.preventDefault();
-    signOut(auth)
-      .then(() => {
-        console.log("you are logged out");
-        router.push("/");
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-  }
+  // Listen for changes on loading and authUser, redirect if needed
+  useEffect(() => {
+    if (!loading && !authUser) router.push("/");
+  }, [authUser, loading]);
 
   return (
     <>
@@ -243,7 +234,7 @@ export default function Dashboard() {
                 Hello mate. <br /> welcome aboard
               </h2>
               <div className="w-1/3 mx-auto">
-                <form onSubmit={handleLogOut}>
+                <form onSubmit={signOut}>
                   <button className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Logout
                   </button>

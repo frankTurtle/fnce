@@ -1,34 +1,38 @@
-import Head from "next/head";
-import Image from "next/image";import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/config";
-import styles from "../styles/Home.module.css";
-
+import { useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 
-const signup = () => {
+import { useAuth } from "../components/context/AuthUserContext";
+import styles from "../styles/Home.module.css";
+
+const SignUp = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
+  const [passwordOne, setPasswordOne] = useState("");
+  const [passwordTwo, setPasswordTwo] = useState("");
   const router = useRouter();
+  const [error, setError] = useState(null);
 
-  function handleSignUp(e) {
-    e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log("Your are registered");
-        router.push("/dashboard");
-      })
-      .catch((error) => {
-        console.log(error.message);
-        setError(
-          "Make password more than 6 characters and format email properly"
-        );
-        // ..
-      });
-  }
+  const { emailAndPasswordAccountCreation } = useAuth();
+
+  const handleSignUp = (event) => {
+    setError(null);
+    //check if passwords match. If they do, create user in Firebase
+    // and redirect to your logged in page.
+    if (passwordOne === passwordTwo)
+      emailAndPasswordAccountCreation(email, passwordOne)
+        .then((authUser) => {
+          console.log("Success. The user is created in Firebase");
+          router.push("/dashboard");
+        })
+        .catch((error) => {
+          // An error occurred. Set error message to be displayed to user
+          setError(error.message);
+        });
+    else setError("Password do not match");
+    event.preventDefault();
+  };
 
   return (
     <div className={styles.container}>
@@ -79,13 +83,30 @@ const signup = () => {
                       Password
                     </label>
                     <input
-                      onChange={(e) => setPassword(e.target.value)}
-                      value={password}
+                      onChange={(e) => setPasswordOne(e.target.value)}
+                      value={passwordOne}
                       type="password"
                       placeholder="Password"
                       className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
+
+                  <div>
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Confirm Password
+                    </label>
+                    <input
+                      onChange={(e) => setPasswordTwo(e.target.value)}
+                      value={passwordTwo}
+                      type="password"
+                      placeholder="Confirm Password"
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </div>
+
                   <div>
                     <button
                       type="submit"
@@ -123,4 +144,4 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default SignUp;
